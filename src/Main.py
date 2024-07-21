@@ -14,17 +14,21 @@ from Structures.Message import Message
 
 sys.path.insert(0, os.getcwd())
 
-client = Client("db.sqlite3", "db.sqlite3", "#", "www.google.com")
+client = Client(name="Alica", uuid="db.sqlite3",
+                prefix="#", uri="www.google.com")
 
 client.log.setLevel(logging.INFO)
+
 
 @client.event(ConnectedEv)
 def on_connected(_: Client, __: ConnectedEv):
     client.log.info("⚡ Connected")
 
+
 @client.event(JoinedGroupEv)
 def on_joined(client: Client, data: JoinedGroupEv):
-    client.send_message(data.GroupInfo.JID, f"Thanks for add me in {data.GroupInfo.GroupName.Name}!!")
+    client.send_message(
+        data.GroupInfo.JID, f"Thanks for add me in {data.GroupInfo.GroupName.Name}!!")
 
 
 @client.event(ReceiptEv)
@@ -41,10 +45,11 @@ def on_call(_: Client, call: CallOfferEv):
 def on_message(client: Client, message: MessageEv):
     handler(client, Message(client, message).build())
 
+
 def handler(client: Client, M: Message):
     match M.content:
         case "ping":
-            client.reply_message("Pong", M.raw())
+            client.reply_message("Pong", M)
 
 
 @client.event(PairStatusEv)
