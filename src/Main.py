@@ -20,9 +20,12 @@ client = Client(name="db.sqlite3", uuid="db.sqlite3",
 
 client.log.setLevel(logging.INFO)
 
+instance = MessageHandler(client)
+
 
 @client.event(ConnectedEv)
 def on_connected(_: Client, __: ConnectedEv):
+    instance.load_commands("src/Commands")
     client.log.info("⚡ Connected")
 
 
@@ -42,13 +45,9 @@ def on_call(_: Client, call: CallOfferEv):
     client.log.debug(call)
 
 
-c = MessageHandler(client=client)
-c.load_classes("src/Commands")
-
-
 @client.event(MessageEv)
 def on_message(client: Client, message: MessageEv):
-    c.handler(Message(client, message).build())
+    instance.handler(Message(client, message).build())
 
 
 def handler(client: Client, M: Message):
