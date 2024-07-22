@@ -10,11 +10,12 @@ from neonize.events import (
     CallOfferEv,
 )
 from Structures.Client import Client
+from Handlers.MessageHandler import MessageHandler
 from Structures.Message import Message
 
 sys.path.insert(0, os.getcwd())
 
-client = Client(name="Alica", uuid="db.sqlite3",
+client = Client(name="db.sqlite3", uuid="db.sqlite3",
                 prefix="#", uri="www.google.com")
 
 client.log.setLevel(logging.INFO)
@@ -41,9 +42,13 @@ def on_call(_: Client, call: CallOfferEv):
     client.log.debug(call)
 
 
+c = MessageHandler(client=client)
+c.load_classes("src/Commands")
+
+
 @client.event(MessageEv)
 def on_message(client: Client, message: MessageEv):
-    handler(client, Message(client, message).build())
+    c.handler(Message(client, message).build())
 
 
 def handler(client: Client, M: Message):
