@@ -5,10 +5,11 @@ from neonize.events import (
     ConnectedEv,
     MessageEv,
     PairStatusEv,
-    ReceiptEv,
+    GroupInfoEv,
     JoinedGroupEv,
     CallOfferEv,
 )
+from Handlers.Eventhandler import Event
 from Structures.Client import Client
 from Handlers.MessageHandler import MessageHandler
 from Structures.Message import Message
@@ -21,6 +22,7 @@ client = Client(name="db.sqlite3", uuid="db.sqlite3",
 client.log.setLevel(logging.INFO)
 
 instance = MessageHandler(client)
+event_instance = Event(client)
 
 
 @client.event(ConnectedEv)
@@ -30,30 +32,21 @@ def on_connected(_: Client, __: ConnectedEv):
 
 
 @client.event(JoinedGroupEv)
-def on_joined(client: Client, data: JoinedGroupEv):
-    client.send_message(
-        data.GroupInfo.JID, f"Thanks for add me in {data.GroupInfo.GroupName.Name}!!")
-
-
-@client.event(ReceiptEv)
-def on_receipt(_: Client, receipt: ReceiptEv):
-    client.log.debug(receipt)
+def on_joined(_: Client, event: JoinedGroupEv): event_instance.on_joined(event)
 
 
 @client.event(CallOfferEv)
-def on_call(_: Client, call: CallOfferEv):
-    client.log.debug(call)
+def on_call(_: Client, call: CallOfferEv): event_instance.on_call(call)
+
+
+@client.event(GroupInfoEv)
+def on_groupevent(
+    _: Client, event: GroupInfoEv): event_instance.on_groupevent(event)
 
 
 @client.event(MessageEv)
-def on_message(client: Client, message: MessageEv):
-    instance.handler(Message(client, message).build())
-
-
-def handler(client: Client, M: Message):
-    match M.content:
-        case "ping":
-            client.reply_message("Pong", M)
+def on_message(client: Client, message: MessageEv): instance.handler(
+    Message(client, message).build())
 
 
 @client.event(PairStatusEv)
