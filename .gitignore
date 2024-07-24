@@ -1,0 +1,6 @@
+db.sqlite3
+src/Structures/__pycache__
+src/Structures/Command/__pycache__
+src/Handlers/__pycache__
+src/Commands/__pycache__
+src/__pycache__

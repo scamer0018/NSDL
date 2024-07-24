@@ -25,13 +25,13 @@ class Message:
         self.type = self.__client.get_message_type(message)
         self.content = self.__client.extract_text(message.Message)
 
-        if (self.Message.extendedTextMessage.contextInfo.quotedMessage.extendedTextMessage.contextInfo.mentionedJID):
+        if self.Message.extendedTextMessage.contextInfo.quotedMessage.extendedTextMessage.contextInfo.mentionedJID:
             for mention in self.Message.extendedTextMessage.contextInfo.quotedMessage.extendedTextMessage.contextInfo.mentionedJID:
                 self.mentioned.append({
                     "jid": self.__client.build_jid(mention).User,
                     "username": self.__client.contact.get_contact(self.__client.build_jid(mention)).PushName
                 })
-        elif (self.Message.extendedTextMessage.contextInfo.participant):
+        elif self.Message.extendedTextMessage.contextInfo.participant:
             self.mentioned.append({
                 "jid": self.__client.build_jid(self.Message.extendedTextMessage.contextInfo.participant).User,
                 "username": self.__client.contact.get_contact(self.__client.build_jid(self.Message.extendedTextMessage.contextInfo.participant)).PushName
@@ -44,9 +44,11 @@ class Message:
         for number in self.__client.utils.extract_numbers(self.content):
             self.numbers.append(number)
 
-        self.group = self.__client.get_group_info(self.gcjid)
-        self.isAdmin = self.sender['jid'] in self.__client.filter_admin_users(
-            self.group.Participants)
+        if self.chat == "group":
+            self.group = self.__client.get_group_info(self.gcjid)
+            self.isAdminMessage = self.sender['jid'] in self.__client.filter_admin_users(
+                self.group.Participants)
+
         return self
 
     def raw(self):

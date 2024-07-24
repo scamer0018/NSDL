@@ -10,7 +10,8 @@ class Command(BaseCommand):
             'category': 'core',
             'description': {
                 'content': 'Say hello to the bot'
-            }
+            },
+            'exp': 1
         })
 
     def exec(self, M: Message, contex):

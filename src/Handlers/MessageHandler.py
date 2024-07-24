@@ -23,7 +23,7 @@ class MessageHandler:
         if not isCommand:
             return
 
-        if (M.content == self.__client.prifix):
+        if M.content == self.__client.prifix:
             return self.__client.reply_message(f"Enter a command following {self.__client.prifix}", M)
 
         cmd = self.commands[contex.get("cmd")] if contex.get(
@@ -31,6 +31,13 @@ class MessageHandler:
 
         if not cmd:
             return self.__client.reply_message("Command does not avilable!!", M)
+
+        if cmd.__getattribute__("config").get("group", False) and M.chat == "dm":
+            return self.__client.reply_message(
+                "This command can only be used in groups", M)
+        if cmd.__getattribute__("config").get("admin", False) and not M.isAdminMessage:
+            return M.reply("Only admins are allowed to use this command")
+
         cmd.exec(M, contex)
 
     def load_commands(self, folder_path):
