@@ -3,6 +3,7 @@ from neonize.client import NewClient
 from neonize.utils import *
 from neonize.events import event
 from Helpers.Utils import Utils
+from Helpers.DynamicConfig import DynamicConfig
 from typing import List
 from neonize.proto.Neonize_pb2 import GroupParticipant
 
@@ -16,11 +17,9 @@ signal.signal(signal.SIGINT, interrupted)
 
 class Client(NewClient):
 
-    def __init__(self, name: str, uuid: str, prefix: str, uri: str):
+    def __init__(self, uuid: str, config):
         super().__init__(uuid)
-        self.name = name
-        self.prifix = prefix
-        self.uri = uri
+        self.config = DynamicConfig(config)
         self.log = log
         self.get_message_type = get_message_type
         self.extract_text = extract_text

@@ -9,6 +9,7 @@ from neonize.events import (
     JoinedGroupEv,
     CallOfferEv,
 )
+from Config import get_config
 from Handlers.Eventhandler import Event
 from Structures.Client import Client
 from Handlers.MessageHandler import MessageHandler
@@ -16,8 +17,9 @@ from Structures.Message import Message
 
 sys.path.insert(0, os.getcwd())
 
-client = Client(name="db.sqlite3", uuid="db.sqlite3",
-                prefix="#", uri="www.google.com")
+config = get_config()
+
+client = Client(uuid="db.sqlite3", config=config)
 
 client.log.setLevel(logging.INFO)
 
