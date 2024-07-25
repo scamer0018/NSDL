@@ -18,13 +18,11 @@ from Structures.Message import Message
 sys.path.insert(0, os.getcwd())
 
 config = get_config()
-
 client = Client(uuid="db.sqlite3", config=config)
-
-client.log.setLevel(logging.INFO)
-
 instance = MessageHandler(client)
 event_instance = Event(client)
+
+client.log.setLevel(logging.INFO)
 
 
 @client.event(ConnectedEv)

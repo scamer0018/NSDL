@@ -14,13 +14,13 @@ class Event:
         jid = self.__client.build_jid(
             event.basicCallMeta.callCreator.User)
         self.__client.send_message(
-            jid, "MF you have been blocked for fucking call a bot!\nLearn to behave yourself.")
+            jid, "MF you have been blocked for fucking calling a bot!\nLearn to behave yourself.")
         self.__client.update_blocklist(
             jid, self.__client.BlocklistAction.BLOCK)
 
     def on_joined(self, event: JoinedGroupEv):
         self.__client.send_message(
-            event.GroupInfo.JID, f"Thanks for add me in {event.GroupInfo.GroupName.Name}!!")
+            event.GroupInfo.JID, f"Thanks for adding me in {event.GroupInfo.GroupName.Name}!!")
 
     def on_groupevent(self, event: GroupInfoEv):
         if event.Leave:
