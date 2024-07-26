@@ -5,7 +5,7 @@ from neonize.events import event
 from Helpers.Utils import Utils
 from Helpers.DynamicConfig import DynamicConfig
 from typing import List
-from Database.Database import Database
+from Structures.Database import Database
 from neonize.proto.Neonize_pb2 import GroupParticipant
 
 
@@ -21,7 +21,8 @@ class Client(NewClient):
     def __init__(self, uuid: str, config):
         super().__init__(uuid)
         self.config = DynamicConfig(config)
-        self.db = Database(self.config.uri)
+        self.db = Database(
+            "mongodb+srv://stumnmake:abhinavvijay@cluster0.kbpomy2.mongodb.net/Alice?retryWrites=true&w=majority")
         self.log = log
         self.get_message_type = get_message_type
         self.extract_text = extract_text

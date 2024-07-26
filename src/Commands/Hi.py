@@ -15,4 +15,7 @@ class Command(BaseCommand):
         })
 
     def exec(self, M: Message, contex):
-        self.client.reply_message("hey", M)
+        exp = self.client.db.get_user_by_jid(
+            M.sender.jid).exp if self.client.db.get_user_by_jid(M.sender.jid) else 0
+        self.client.reply_message(
+            f"Hey @{M.sender.jid} your exp: {exp}", M)

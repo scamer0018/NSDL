@@ -2,6 +2,7 @@ import os
 import importlib.util
 from Structures.Client import Client
 from Structures.Message import Message
+from Helpers.Ranks import get_rank
 from Helpers.DynamicConfig import DynamicConfig
 
 
@@ -16,7 +17,7 @@ class MessageHandler:
         contex = DynamicConfig(self.parse_args(M.content))
         isCommand = M.content.startswith(self.__client.config.prefix)
 
-        chat_type = "[CMD]: " if isCommand else "[MDG]: "
+        chat_type = "[CMD]: " if isCommand else "[MSG]: "
         _from = M.group.GroupName.Name if M.chat == "group" else "Direct Message"
         self.__client.log.info(
             f"{chat_type} from {M.sender.username} in {_from}")
@@ -30,6 +31,13 @@ class MessageHandler:
         cmd = self.commands[contex.cmd] if contex.cmd in self.commands.keys(
         ) else None
 
+        user = self.client.db.get_user_by_jid(
+            M.sender.jid) if self.client.db.get_user_by_jid(M.sender.jid) else DynamicConfig({
+                "jid": M.sender.jid,
+                "exp": 0,
+                "ban": False
+            })
+
         if not cmd:
             return self.__client.reply_message("Command does not avilable!!", M)
 
@@ -37,7 +45,21 @@ class MessageHandler:
             return self.__client.reply_message(
                 "This command can only be used in groups", M)
         if hasattr(cmd.config, "admin") and not M.isAdminMessage:
-            return M.reply("Only admins are allowed to use this command")
+            return self.__client.reply_message("Only admins are allowed to use this command", M)
+
+        self.__client.db.add_exp(M.sender.jid, cmd.config.exp)
+
+        new_exp = user.exp + cmd.config.exp
+
+        # Get the old and new ranks
+        old_rank = get_rank(user.exp)
+        new_rank = get_rank(new_exp)
+
+        # Check if the rank has changed
+        if old_rank['name'] != new_rank['name']:
+            self.__client.reply_message(
+                f"(Ranked UP): {M.sender.username} has ranked up from {old_rank['name']} {old_rank['emoji']} "
+                f"to {new_rank['name']} {new_rank['emoji']}", M)
 
         cmd.exec(M, contex)
 

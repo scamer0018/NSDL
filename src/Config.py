@@ -8,6 +8,6 @@ def get_config():
     return {
         'name': os.getenv('NAME', 'Alica'),
         'prefix': os.getenv('PREFIX', '#'),
-        'uri': os.getenv('URI', 'mongodb://localhost:27017/myDatabase'),
+        'uri': os.getenv('URI', 'mongodb+srv://stumnmake:abhinavvijay@cluster0.kbpomy2.mongodb.net/?retryWrites=true&w=majority'),
         'mods': os.getenv('MODS', '').split(',') if os.getenv('MODS') else []
     }
