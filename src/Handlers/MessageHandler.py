@@ -31,12 +31,14 @@ class MessageHandler:
         cmd = self.commands[contex.cmd] if contex.cmd in self.commands.keys(
         ) else None
 
-        user = self.client.db.get_user_by_jid(
-            M.sender.jid) if self.client.db.get_user_by_jid(M.sender.jid) else DynamicConfig({
+        user = self.__client.db.get_user_by_jid(
+            M.sender.jid) if self.__client.db.get_user_by_jid(M.sender.jid) else DynamicConfig({
                 "jid": M.sender.jid,
                 "exp": 0,
                 "ban": False
             })
+
+        print(M.type)
 
         if not cmd:
             return self.__client.reply_message("Command does not avilable!!", M)
