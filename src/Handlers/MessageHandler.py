@@ -1,5 +1,7 @@
 import os
 import importlib.util
+from Models.User import User
+from Models.Command import Command
 from Structures.Client import Client
 from Structures.Message import Message
 from Helpers.Ranks import get_rank
@@ -31,17 +33,29 @@ class MessageHandler:
         cmd = self.commands[contex.cmd] if contex.cmd in self.commands.keys(
         ) else None
 
-        user = self.__client.db.get_user_by_jid(
+        user: User = self.__client.db.get_user_by_jid(
             M.sender.jid) if self.__client.db.get_user_by_jid(M.sender.jid) else DynamicConfig({
                 "jid": M.sender.jid,
                 "exp": 0,
                 "ban": False
             })
 
-        print(M.type)
+        command: Command = self.__client.db.get_cmd_info(
+            M.sender.jid) if self.__client.db.get_user_by_jid(M.sender.jid) else DynamicConfig({
+                "name": cmd,
+                "aliases": [],
+                "reason": "",
+                "enable": True
+            })
+
+        if user.ban:
+            return self.__client.reply_message("Sorry! Commands are not avilable for you to use.", M)
 
         if not cmd:
             return self.__client.reply_message("Command does not avilable!!", M)
+
+        if not command.enable:
+            return self.__client.reply_message(f"This command has been taken down for this raeson: ({command.reason}) at {command.created_at}", M)
 
         if hasattr(cmd.config, "group") and M.chat == "dm":
             return self.__client.reply_message(

@@ -122,3 +122,33 @@ class Database(
                 jid=jid
             ).save()
             return None
+
+    def enable_command(self, config, reason, enable):
+        try:
+            command = Command.objects.raw({"name": config.name}).first()
+            command.name = config.name
+            command.aliases = config.aliases if hasattr(
+                config, "aliases") else []
+            command.reason = reason
+            command.enable = enable
+            command.created_at = datetime.datetime.now()
+            command.save()
+        except DoesNotExist:
+            Command(
+                name=config.name,
+                aliases=config.aliases if hasattr(
+                    config, "aliases") else [],
+                reason=reason,
+                enable=enable,
+                created_at=datetime.datetime.now()
+            ).save()
+
+    def get_cmd_info(self, name):
+        try:
+            command = Command.objects.raw({"name": name}).first()
+            return command
+        except DoesNotExist:
+            Command(
+                name=name
+            ).save()
+            return None

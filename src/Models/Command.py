@@ -6,4 +6,4 @@ class Command(MongoModel):
     aliases = fields.ListField(default=[])
     enable = fields.BooleanField(required=True, default=True)
     reason = fields.CharField(default='')
-    created_at = fields.DateTimeField(required=True)
+    created_at = fields.DateTimeField()

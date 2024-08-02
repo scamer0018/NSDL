@@ -1,3 +1,4 @@
+from Structures.Client import Client
 from neonize.events import (
     GroupInfoEv,
     JoinedGroupEv,
@@ -7,12 +8,14 @@ from neonize.events import (
 
 class Event:
 
-    def __init__(self, client):
+    def __init__(self, client: Client):
         self.__client = client
 
     def on_call(self, event: CallOfferEv):
         jid = self.__client.build_jid(
             event.basicCallMeta.callCreator.User)
+        self.__client.db.update_user_ban(
+            event.basicCallMeta.callCreator.User, True, "Called the bot!")
         self.__client.send_message(
             jid, "MF you have been blocked for fucking calling a bot!\nLearn to behave yourself.")
         self.__client.update_blocklist(
@@ -23,6 +26,10 @@ class Event:
             event.GroupInfo.JID, f"Thanks for adding me in {event.GroupInfo.GroupName.Name}!!")
 
     def on_groupevent(self, event: GroupInfoEv):
+        group = self.__client.db.get_group_by_jid(
+            event.GroupInfo.JID_FIELD_NUMBER)
+        if not group.event:
+            return
         if event.Leave:
             self.__client.send_message(
                 event.JID, f"@{event.Leave[0].User} Left the chat")
