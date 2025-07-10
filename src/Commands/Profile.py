@@ -3,6 +3,7 @@ from utils import get_rank
 
 
 class Command(BaseCommand):
+
     def __init__(self, client, handler):
         super().__init__(
             client,
@@ -11,7 +12,9 @@ class Command(BaseCommand):
                 "command": "whoami",
                 "category": "core",
                 "aliases": ["profile"],
-                "description": {"content": "Display user's information."},
+                "description": {
+                    "content": "Display user's information."
+                },
                 "exp": 2,
             },
         )
@@ -65,6 +68,5 @@ class Command(BaseCommand):
 (Use *{self.client.config.prefix}rank* to see ranks and more user info.)"""
 
         image_msg = self.client.build_image_message(
-            self.client.utils.fetch_buffer(pfp), caption=message, quoted=M
-        )
+            self.client.utils.fetch_buffer(pfp), caption=message, quoted=M)
         self.client.send_message(M.gcjid, message=image_msg)
