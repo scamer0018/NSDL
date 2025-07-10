@@ -1,6 +1,4 @@
-from Structures.Command.BaseCommand import BaseCommand
-from Structures.Message import Message
-
+from libs import BaseCommand, MessageClass
 
 class Command(BaseCommand):
 
@@ -14,8 +12,8 @@ class Command(BaseCommand):
             'exp': 1
         })
 
-    def exec(self, M: Message, contex):
+    def exec(self, M: MessageClass, contex):
         exp = self.client.db.get_user_by_jid(
             M.sender.jid).exp if self.client.db.get_user_by_jid(M.sender.jid) else 0
         self.client.reply_message(
-            f"Hey @{M.sender.jid} your exp: {exp}", M)
+            f"🎯 Hey *@{M.sender.jid}*! Your current EXP is: *{exp}*.", M)

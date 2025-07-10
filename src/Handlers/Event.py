@@ -1,4 +1,4 @@
-from Structures.Client import Client
+from libs import Void
 from neonize.events import (
     GroupInfoEv,
     JoinedGroupEv,
@@ -8,7 +8,7 @@ from neonize.events import (
 
 class Event:
 
-    def __init__(self, client: Client):
+    def __init__(self, client: Void):
         self.__client = client
 
     def on_call(self, event: CallOfferEv):
@@ -23,11 +23,11 @@ class Event:
 
     def on_joined(self, event: JoinedGroupEv):
         self.__client.send_message(
-            event.GroupInfo.JID, f"Thanks for adding me in {event.GroupInfo.GroupName.Name}!!")
+            event.JID, f"Thanks for adding me in {event.GroupInfo.GroupName.Name}!!")
 
     def on_groupevent(self, event: GroupInfoEv):
         group = self.__client.db.get_group_by_jid(
-            event.GroupInfo.JID_FIELD_NUMBER)
+            event.JID)
         if not group.event:
             return
         if event.Leave:

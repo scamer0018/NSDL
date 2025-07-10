@@ -1,6 +1,3 @@
-moviepy  ==1.0.3
-neonize  ==0.1.6
-load_dotenv ==0.1.0
-pymodm ==0.4.3
-
-
+neonize==0.3.10
+colorama==0.4.6
+requests==2.31.0
