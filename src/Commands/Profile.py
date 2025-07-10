@@ -34,8 +34,7 @@ class Command(BaseCommand):
         try:
             bio = self.client.get_user_info(jid)[0].UserInfo.Status
         except Exception as e:
-            print(e)
-            bio = ""
+            bio = "None"
 
         pfp = ""
         try:
