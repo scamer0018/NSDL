@@ -1,7 +1,7 @@
 import os
 import sys
 from neonize import NewClient
-from Handlers import Database, Message, Event
+from handlers import Database, Message, Event
 from neonize.utils import *
 from utils import Utils
 from neonize.events import (
@@ -68,7 +68,7 @@ class Void(NewClient):
         self.__message.handler(MessageClass(self, message).build())
 
     def on_connected(self, _: NewClient, __: ConnectedEv):
-        self.__message.load_commands("src/Commands")
+        self.__message.load_commands("src/commands")
         self.log.info(f"⚡ Connected to {self.config.name} and prefix is {self.config.prefix}")
 
     def on_groupevent(self, _, event: GroupInfoEv): 
@@ -90,7 +90,7 @@ class Void(NewClient):
             "stickerMessage": "STICKER",
         }
         for attr, desc in message_types.items():
-            if hasattr(msg, attr):
+            if msg.HasField(attr):
                 return desc
         return None
             

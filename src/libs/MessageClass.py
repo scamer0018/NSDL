@@ -4,56 +4,57 @@ from neonize.events import MessageEv
 
 
 class MessageClass:
-
-    urls = []
-
-    quoted_user = None
-
-    numbers = []
-
-    mentioned = []
-
     def __init__(self, client: Void, message: MessageEv):
-        self.__M = message
-        self.Info = self.__M.Info
-        self.Message = self.__M.Message
         self.__client = client
-        number = self.Info.MessageSource.Sender.User
-        self.sender = DynamicConfig({
-            "number": number,
-            "username": self.__client.contact.get_contact(self.__client.build_jid(number)).PushName
-        })
-        self.chat = "group" if self.Info.MessageSource.IsGroup else "dm"
+        self.__M = message
+
+        self.Info = message.Info
+        self.Message = message.Message
+        self.content = client.extract_text(self.Message)
         self.gcjid = self.Info.MessageSource.Chat
-        self.content = self.__client.extract_text(self.Message)
-        self.quoted = self.Message.extendedTextMessage.contextInfo.quotedMessage
-        self.context_info = self.Message.extendedTextMessage.contextInfo
+        self.chat = "group" if self.Info.MessageSource.IsGroup else "dm"
 
-        if message.Message.extendedTextMessage.contextInfo.participant:
-                self.quoted_user = DynamicConfig({
-                    "number": message.Message.extendedTextMessage.contextInfo.participant.split("@")[0],
-                    "username": self.__client.contact.get_contact(self.__client.build_jid(message.Message.extendedTextMessage.contextInfo.participant.split("@")[0])).PushName
-                })
+        sender_number = self.Info.MessageSource.Sender.User
+        self.sender = DynamicConfig({
+            "number": sender_number,
+            "username": client.contact.get_contact(client.build_jid(sender_number)).PushName
+        })
 
-        if hasattr(self.context_info, "mentionedJID"):
-            for jid in getattr(self.context_info, "mentionedJID", []):
+        self.urls = []
+        self.numbers = []
+        self.quoted = None
+        self.quoted_user = None
+        self.mentioned = []
+
+        if self.Message.HasField("extendedTextMessage"):
+            ctx_info = self.Message.extendedTextMessage.contextInfo
+
+            if ctx_info.HasField("quotedMessage"):
+                self.quoted = ctx_info.quotedMessage
+
+                if ctx_info.HasField("participant"):
+                    quoted_number = ctx_info.participant.split("@")[0]
+                    self.quoted_user = DynamicConfig({
+                        "number": quoted_number,
+                        "username": client.contact.get_contact(client.build_jid(quoted_number)).PushName
+                    })
+
+            for jid in ctx_info.mentionedJID:
                 number = jid.split("@")[0]
                 self.mentioned.append(DynamicConfig({
                     "number": number,
-                    "username": self.__client.contact.get_contact(self.__client.build_jid(number)).PushName
+                    "username": client.contact.get_contact(client.build_jid(number)).PushName
                 }))
 
     def build(self):
-        for url in self.__client.utils.get_urls(self.content):
-            self.urls.append(url)
-
-        for number in self.__client.utils.extract_numbers(self.content):
-            self.numbers.append(number)
+        self.urls = self.__client.utils.get_urls(self.content)
+        self.numbers = self.__client.utils.extract_numbers(self.content)
 
         if self.chat == "group":
             self.group = self.__client.get_group_info(self.gcjid)
             self.isAdminMessage = self.sender.number in self.__client.filter_admin_users(
-                self.group.Participants)
+                self.group.Participants
+            )
 
         return self
 
