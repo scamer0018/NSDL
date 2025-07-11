@@ -74,9 +74,6 @@ class Void(NewClient):
     def on_groupevent(self, _, event: GroupInfoEv): 
         self.__event.on_groupevent(event)
 
-    def on_joined(self, _, event: JoinedGroupEv):
-        self.__event.on_joined(event)
-
     def on_call(self, _, event: CallOfferEv):
         self.__event.on_call(event)
         

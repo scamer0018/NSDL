@@ -44,7 +44,7 @@ class Message:
 
         if not cmd:
             return self.__client.reply_message(
-                f"❌ *Command not available!* Please check *{self.__client.config.prefix}help* to see all available commands.",
+                f"❌ *Unknown command!* Use *{self.__client.config.prefix}help* to see all available commands.",
                 M
             )
 
