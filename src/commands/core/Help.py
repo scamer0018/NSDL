@@ -3,26 +3,34 @@ from libs import BaseCommand, MessageClass
 
 class Command(BaseCommand):
     def __init__(self, client, handler):
-        super().__init__(client, handler, {
-            'command': 'help',
-            'category': 'core',
-            'aliases': ['h'],
-            'description': {
-                'content': 'Show all commands or help for a specific one.',
-                'usage': '<command>'
+        super().__init__(
+            client,
+            handler,
+            {
+                "command": "help",
+                "category": "core",
+                "aliases": ["h"],
+                "description": {
+                    "content": "Show all commands or help for a specific one.",
+                    "usage": "<command>",
+                },
+                "exp": 1,
             },
-            'exp': 1
-        })
+        )
 
     def exec(self, M: MessageClass, contex):
         prefix = self.client.config.prefix
         query = contex.text.strip().lower() if contex.text else None
 
         if query:
-            command = self.handler.commands.get(query) or next((
-                cmd for cmd in self.handler.commands.values()
-                if query in cmd.config.get("aliases", [])
-            ), None)
+            command = self.handler.commands.get(query) or next(
+                (
+                    cmd
+                    for cmd in self.handler.commands.values()
+                    if query in cmd.config.get("aliases", [])
+                ),
+                None,
+            )
 
             if not command:
                 return self.client.reply_message("❌ Command not found.", M)
@@ -53,7 +61,10 @@ class Command(BaseCommand):
 
         emoji_array = ["📗", "👑", "🎉", "🔨", "🎈", "🎨", "🛠️", "🎊", "💎"]
         category_names = sorted(grouped.keys())
-        emoji_map = {cat: emoji_array[i % len(emoji_array)] for i, cat in enumerate(category_names)}
+        emoji_map = {
+            cat: emoji_array[i % len(emoji_array)]
+            for i, cat in enumerate(category_names)
+        }
 
         header = f"""
 🤖 *COMMAND LIST* 🤖

@@ -1,5 +1,6 @@
 from pymodm import MongoModel, fields
 
+
 # 👥 Group Model
 class Group(MongoModel):
     number = fields.CharField(required=True)

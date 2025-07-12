@@ -1,17 +1,22 @@
 from libs import BaseCommand, MessageClass
 
+
 class Command(BaseCommand):
     def __init__(self, client, handler):
-        super().__init__(client, handler, {
-            'command': 'sticker',
-            'category': 'tools',
-            'aliases': ['s'],
-            'description': {
-                'content': 'Create sticker from an image or video',
-                'usage': '<name> | <packname>'
+        super().__init__(
+            client,
+            handler,
+            {
+                "command": "sticker",
+                "category": "tools",
+                "aliases": ["s"],
+                "description": {
+                    "content": "Create sticker from an image or video",
+                    "usage": "<name> | <packname>",
+                },
+                "exp": 3,
             },
-            'exp': 3
-        })
+        )
 
     def exec(self, M: MessageClass, contex):
         try:
@@ -30,11 +35,15 @@ class Command(BaseCommand):
             if media_type not in ("IMAGE", "VIDEO"):
                 return self.client.reply_message(
                     f"🖼️ *Please send an image, video, or GIF* with the caption *{self.client.config.prefix}sticker*, or reply to a media message using *{self.client.config.prefix}sticker*.",
-                    M
+                    M,
                 )
 
-            self.client.send_sticker(M.gcjid, media, quoted=M, name=author, packname=pack)
+            self.client.send_sticker(
+                M.gcjid, media, quoted=M, name=author, packname=pack
+            )
 
         except Exception as e:
-            self.client.reply_message("❌ Failed to create sticker. Please try again.", M)
+            self.client.reply_message(
+                "❌ Failed to create sticker. Please try again.", M
+            )
             self.client.log.error(f"[sticker] {e}")

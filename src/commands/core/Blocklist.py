@@ -1,23 +1,33 @@
 from libs import BaseCommand, MessageClass
 
+
 class Command(BaseCommand):
     def __init__(self, client, handler):
-        super().__init__(client, handler, {
-            "command": "blocklist",
-            "category": "core",
-            "description": {
-                "content": "Displays all users blocked by the bot."
+        super().__init__(
+            client,
+            handler,
+            {
+                "command": "blocklist",
+                "category": "core",
+                "description": {
+                    "content": "Displays all users blocked by the bot."
+                },
+                "aliases": ["blist", "blocked"],
+                "exp": 0,
             },
-            "aliases": ["blist", "blocked"],
-            "exp": 0
-        })
+        )
 
     def exec(self, M: MessageClass, _):
         try:
             blocklist_response = self.client.get_blocklist()
 
-            if not hasattr(blocklist_response, "JIDs") or len(blocklist_response.JIDs) == 0:
-                return self.client.reply_message("✅ No users are currently blocked.", M)
+            if (
+                not hasattr(blocklist_response, "JIDs")
+                or len(blocklist_response.JIDs) == 0
+            ):
+                return self.client.reply_message(
+                    "✅ No users are currently blocked.", M
+                )
 
             lines = []
             for i, jid in enumerate(blocklist_response.JIDs, start=1):
@@ -25,11 +35,12 @@ class Command(BaseCommand):
                     lines.append(f"{i}. wa.me/{jid.User}")
 
             if not lines:
-                return self.client.reply_message("✅ No users are currently blocked.", M)
+                return self.client.reply_message(
+                    "✅ No users are currently blocked.", M
+                )
 
-            message = (
-                f"🚫 *Blocked Users ({len(lines)})*\n\n" +
-                "\n".join(lines)
+            message = f"🚫 *Blocked Users ({len(lines)})*\n\n" + "\n".join(
+                lines
             )
 
             self.client.reply_message(message, M)

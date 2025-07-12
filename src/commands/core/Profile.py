@@ -1,6 +1,7 @@
 from libs import BaseCommand, MessageClass
 from utils import get_rank
 
+
 class Command(BaseCommand):
     def __init__(self, client, handler):
         super().__init__(
@@ -12,7 +13,7 @@ class Command(BaseCommand):
                 "aliases": ["profile"],
                 "description": {
                     "content": "Display user's information.",
-                    "usage": "<@mention>"
+                    "usage": "<@mention>",
                 },
                 "exp": 2,
             },
@@ -20,7 +21,9 @@ class Command(BaseCommand):
 
     def exec(self, M: MessageClass, _):
         try:
-            target = M.quoted_user or (M.mentioned[0] if M.mentioned else M.sender)
+            target = M.quoted_user or (
+                M.mentioned[0] if M.mentioned else M.sender
+            )
             jid = self.client.build_jid(target.number)
             username = target.username
 
@@ -56,7 +59,12 @@ class Command(BaseCommand):
                 f"(Use *{self.client.config.prefix}rank* to see ranks and more user info.)"
             )
 
-            self.client.send_image(M.gcjid, self.client.utils.fetch_buffer(pfp_url), caption=message, quoted=M)
+            self.client.send_image(
+                M.gcjid,
+                self.client.utils.fetch_buffer(pfp_url),
+                caption=message,
+                quoted=M,
+            )
 
         except Exception as e:
             self.client.reply_message("❌ Failed to retrieve profile.", M)

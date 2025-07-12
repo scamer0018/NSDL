@@ -3,17 +3,20 @@ from libs import BaseCommand, MessageClass
 from models.User import User
 from models.Group import Group
 
+
 class Command(BaseCommand):
     def __init__(self, client, handler):
-        super().__init__(client, handler, {
-            'command': 'info',
-            'category': 'core',
-            'aliases': ['about', 'botinfo'],
-            'description': {
-                'content': 'Show detailed bot information.'
+        super().__init__(
+            client,
+            handler,
+            {
+                "command": "info",
+                "category": "core",
+                "aliases": ["about", "botinfo"],
+                "description": {"content": "Show detailed bot information."},
+                "exp": 1,
             },
-            'exp': 1
-        })
+        )
         self.start_time = time.time()
 
     def get_uptime(self):

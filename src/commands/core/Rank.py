@@ -1,17 +1,25 @@
 from libs import BaseCommand, MessageClass
-from utils import get_rank, ranks  # assuming `ranks` is a dict with exp thresholds
+from utils import (
+    get_rank,
+    ranks,
+)  # assuming `ranks` is a dict with exp thresholds
+
 
 class Command(BaseCommand):
     def __init__(self, client, handler):
-        super().__init__(client, handler, {
-            'command': 'rank',
-            'category': 'core',
-            'description': {
-                'content': 'Show your current rank and next promotion info.'
+        super().__init__(
+            client,
+            handler,
+            {
+                "command": "rank",
+                "category": "core",
+                "description": {
+                    "content": "Show your current rank and next promotion info."
+                },
+                "aliases": ["lvl", "level"],
+                "exp": 3,
             },
-            'aliases': ['lvl', 'level'],
-            'exp': 3
-        })
+        )
 
     def exec(self, M: MessageClass, _):
         user = self.client.db.get_user_by_number(M.sender.number)

@@ -3,6 +3,7 @@ from config import get_config
 from libs import Void
 from utils import Log
 
+
 def main():
     config = get_config()
 
@@ -19,6 +20,7 @@ def main():
     except Exception as e:
         Log.critical(f"🚨 Unexpected error occurred: {e}")
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main()

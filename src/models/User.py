@@ -5,6 +5,7 @@ from datetime import datetime
 # default timezone
 INDIA_TZ = ZoneInfo("Asia/Kolkata")
 
+
 # 👤 User Model
 class User(MongoModel):
     number = fields.CharField(required=True)
@@ -12,4 +13,6 @@ class User(MongoModel):
     ban = fields.BooleanField(required=True, default=False)
     reason = fields.CharField(default="None")
     banned_at = fields.DateTimeField()
-    created_at = fields.DateTimeField(default=datetime.now(INDIA_TZ), required=True)
+    created_at = fields.DateTimeField(
+        default=datetime.now(INDIA_TZ), required=True
+    )

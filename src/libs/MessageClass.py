@@ -15,10 +15,14 @@ class MessageClass:
         self.chat = "group" if self.Info.MessageSource.IsGroup else "dm"
 
         sender_number = self.Info.MessageSource.Sender.User
-        self.sender = DynamicConfig({
-            "number": sender_number,
-            "username": client.contact.get_contact(client.build_jid(sender_number)).PushName
-        })
+        self.sender = DynamicConfig(
+            {
+                "number": sender_number,
+                "username": client.contact.get_contact(
+                    client.build_jid(sender_number)
+                ).PushName,
+            }
+        )
 
         self.urls = []
         self.numbers = []
@@ -34,17 +38,27 @@ class MessageClass:
 
                 if ctx_info.HasField("participant"):
                     quoted_number = ctx_info.participant.split("@")[0]
-                    self.quoted_user = DynamicConfig({
-                        "number": quoted_number,
-                        "username": client.contact.get_contact(client.build_jid(quoted_number)).PushName
-                    })
+                    self.quoted_user = DynamicConfig(
+                        {
+                            "number": quoted_number,
+                            "username": client.contact.get_contact(
+                                client.build_jid(quoted_number)
+                            ).PushName,
+                        }
+                    )
 
             for jid in ctx_info.mentionedJID:
                 number = jid.split("@")[0]
-                self.mentioned.append(DynamicConfig({
-                    "number": number,
-                    "username": client.contact.get_contact(client.build_jid(number)).PushName
-                }))
+                self.mentioned.append(
+                    DynamicConfig(
+                        {
+                            "number": number,
+                            "username": client.contact.get_contact(
+                                client.build_jid(number)
+                            ).PushName,
+                        }
+                    )
+                )
 
     def build(self):
         self.urls = self.__client.utils.get_urls(self.content)
@@ -52,8 +66,9 @@ class MessageClass:
 
         if self.chat == "group":
             self.group = self.__client.get_group_info(self.gcjid)
-            self.isAdminMessage = self.sender.number in self.__client.filter_admin_users(
-                self.group.Participants
+            self.isAdminMessage = (
+                self.sender.number
+                in self.__client.filter_admin_users(self.group.Participants)
             )
 
         return self

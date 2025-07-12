@@ -49,38 +49,72 @@ class Utils:
             for file in files:
                 results.append(os.path.join(root, file))
         return results
-    
+
     @staticmethod
     def to_small_caps(text):
         map_small = {
-            'a': 'ᴀ', 'b': 'ʙ', 'c': 'ᴄ', 'd': 'ᴅ', 'e': 'ᴇ', 'f': 'ꜰ', 'g': 'ɢ',
-            'h': 'ʜ', 'i': 'ɪ', 'j': 'ᴊ', 'k': 'ᴋ', 'l': 'ʟ', 'm': 'ᴍ', 'n': 'ɴ',
-            'o': 'ᴏ', 'p': 'ᴘ', 'q': 'Q', 'r': 'ʀ', 's': 'ꜱ', 't': 'ᴛ',
-            'u': 'ᴜ', 'v': 'ᴠ', 'w': 'ᴡ', 'x': 'x', 'y': 'ʏ', 'z': 'ᴢ'
+            "a": "ᴀ",
+            "b": "ʙ",
+            "c": "ᴄ",
+            "d": "ᴅ",
+            "e": "ᴇ",
+            "f": "ꜰ",
+            "g": "ɢ",
+            "h": "ʜ",
+            "i": "ɪ",
+            "j": "ᴊ",
+            "k": "ᴋ",
+            "l": "ʟ",
+            "m": "ᴍ",
+            "n": "ɴ",
+            "o": "ᴏ",
+            "p": "ᴘ",
+            "q": "Q",
+            "r": "ʀ",
+            "s": "ꜱ",
+            "t": "ᴛ",
+            "u": "ᴜ",
+            "v": "ᴠ",
+            "w": "ᴡ",
+            "x": "x",
+            "y": "ʏ",
+            "z": "ᴢ",
         }
-        return ''.join(map_small.get(c.lower(), c) for c in text)
+        return "".join(map_small.get(c.lower(), c) for c in text)
 
     @staticmethod
     def buffer_to_base64(buffer: bytes) -> str:
-        return base64.b64encode(buffer).decode('utf-8')
+        return base64.b64encode(buffer).decode("utf-8")
 
     @staticmethod
     def webp_to_mp4(webp: bytes) -> bytes:
         try:
-            def request(form_data, file_id=None):
-                url = f'https://ezgif.com/webp-to-mp4/{file_id}' if file_id else 'https://ezgif.com/webp-to-mp4'
-                return BeautifulSoup(requests.post(url, files=form_data).text, 'html.parser')
 
-            files = {'new-image': ('upload.webp', webp, 'image/webp')}
+            def request(form_data, file_id=None):
+                url = (
+                    f"https://ezgif.com/webp-to-mp4/{file_id}"
+                    if file_id
+                    else "https://ezgif.com/webp-to-mp4"
+                )
+                return BeautifulSoup(
+                    requests.post(url, files=form_data).text, "html.parser"
+                )
+
+            files = {"new-image": ("upload.webp", webp, "image/webp")}
             soup1 = request(files)
-            file_id = soup1.find('input', {'name': 'file'})['value']
+            file_id = soup1.find("input", {"name": "file"})["value"]
 
             files = {
-                'file': (file_id, 'image/webp'),
-                'convert': 'Convert WebP to MP4!'
+                "file": (file_id, "image/webp"),
+                "convert": "Convert WebP to MP4!",
             }
             soup2 = request(files, file_id)
-            video_url = 'https:' + soup2.find('div', id='output').find('video').find('source')['src']
+            video_url = (
+                "https:"
+                + soup2.find("div", id="output")
+                .find("video")
+                .find("source")["src"]
+            )
             return requests.get(video_url).content
 
         except Exception as e:
@@ -89,7 +123,7 @@ class Utils:
 
     @staticmethod
     def extract_numbers(content: str) -> List[int]:
-        return [max(int(n), 0) for n in re.findall(r'-?\d+', content)]
+        return [max(int(n), 0) for n in re.findall(r"-?\d+", content)]
 
     @staticmethod
     def get_random_int(min_val: int, max_val: int) -> int:
@@ -109,22 +143,22 @@ class Utils:
 
     @staticmethod
     def get_urls(text: str) -> Set[str]:
-        return set(re.findall(r'https?://[^\s]+', text))
+        return set(re.findall(r"https?://[^\s]+", text))
 
     @staticmethod
     def gif_to_mp4(gif: bytes) -> bytes:
         temp_dir = tempfile.mkdtemp()
-        gif_path = os.path.join(temp_dir, 'input.gif')
-        mp4_path = os.path.join(temp_dir, 'output.mp4')
+        gif_path = os.path.join(temp_dir, "input.gif")
+        mp4_path = os.path.join(temp_dir, "output.mp4")
 
         try:
-            with open(gif_path, 'wb') as f:
+            with open(gif_path, "wb") as f:
                 f.write(gif)
 
             clip = VideoFileClip(gif_path)
-            clip.write_videofile(mp4_path, codec='libx264', logger=None)
+            clip.write_videofile(mp4_path, codec="libx264", logger=None)
 
-            with open(mp4_path, 'rb') as f:
+            with open(mp4_path, "rb") as f:
                 return f.read()
 
         except Exception as e:

@@ -36,11 +36,9 @@ class Database:
             Group(**updates).save()
 
     def update_user_ban(self, number, ban, reason):
-        self._update_or_create_user(number, {
-            "ban": ban,
-            "reason": reason,
-            "banned_at": self.now()
-        })
+        self._update_or_create_user(
+            number, {"ban": ban, "reason": reason, "banned_at": self.now()}
+        )
 
     def add_exp(self, number, exp):
         try:
@@ -70,22 +68,16 @@ class Database:
             return User.objects.raw({"number": number}).first()
         except DoesNotExist:
             self._update_or_create_user(number, {})
-            return DynamicConfig({
-                "number": number,
-                "exp": 0,
-                "ban": False
-            })
+            return DynamicConfig({"number": number, "exp": 0, "ban": False})
 
     def get_group_by_number(self, number):
         try:
             return Group.objects.raw({"number": number}).first()
         except DoesNotExist:
             self._update_or_create_group(number, {})
-            return DynamicConfig({
-                "number": number,
-                "mod": False,
-                "events": False
-            })
+            return DynamicConfig(
+                {"number": number, "mod": False, "events": False}
+            )
 
     def enable_command(self, config, reason, enable):
         try:
@@ -101,7 +93,7 @@ class Database:
                 aliases=getattr(config, "aliases", []),
                 reason=reason,
                 enable=enable,
-                created_at=self.now()
+                created_at=self.now(),
             ).save()
 
     def get_cmd_info(self, name):
@@ -109,9 +101,6 @@ class Database:
             return Command.objects.raw({"name": name}).first()
         except DoesNotExist:
             Command(name=name).save()
-            return DynamicConfig({
-                "name": name,
-                "aliases": [],
-                "reason": "",
-                "enable": True
-            })
+            return DynamicConfig(
+                {"name": name, "aliases": [], "reason": "", "enable": True}
+            )

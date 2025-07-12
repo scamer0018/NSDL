@@ -1,21 +1,28 @@
 from libs import BaseCommand, MessageClass
 
+
 class Command(BaseCommand):
     def __init__(self, client, handler):
-        super().__init__(client, handler, {
-            'command': 'mods',
-            'category': 'core',
-            'aliases': ['modlist', 'developers'],
-            'description': {
-                'content': 'Displays the list of bot moderators.'
+        super().__init__(
+            client,
+            handler,
+            {
+                "command": "mods",
+                "category": "core",
+                "aliases": ["modlist", "developers"],
+                "description": {
+                    "content": "Displays the list of bot moderators."
+                },
+                "exp": 1,
             },
-            'exp': 1
-        })
+        )
 
     def exec(self, M: MessageClass, _):
-        mods = self.client.config.mods 
+        mods = self.client.config.mods
         if not mods:
-            return self.client.reply_message("⚠️ No moderators are currently assigned.", M)
+            return self.client.reply_message(
+                "⚠️ No moderators are currently assigned.", M
+            )
 
         lines = []
         for number in mods:

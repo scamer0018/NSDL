@@ -11,14 +11,16 @@ from neonize.events import (
     CallOfferEv,
     GroupInfoEv,
     PairStatusEv,
-    event
+    event,
 )
 
 
 sys.path.insert(0, os.getcwd())
 
+
 def interrupted(*_):
     event.set()
+
 
 class Void(NewClient):
     def __init__(self, db_path, config, log):
@@ -66,21 +68,24 @@ class Void(NewClient):
 
     def on_message(self, _: NewClient, message: MessageEv):
         from libs import MessageClass
+
         self.__message.handler(MessageClass(self, message).build())
 
     def on_connected(self, _: NewClient, __: ConnectedEv):
         self.__message.load_commands("src/commands")
-        self.log.info(f"⚡ Connected to {self.config.name} and prefix is {self.config.prefix}")
+        self.log.info(
+            f"⚡ Connected to {self.config.name} and prefix is {self.config.prefix}"
+        )
 
-    def on_groupevent(self, _, event: GroupInfoEv): 
+    def on_groupevent(self, _, event: GroupInfoEv):
         self.__event.on_groupevent(event)
-        
+
     def on_joined(self, _, event: JoinedGroupEv):
         self.__event.on_joined(event)
 
     def on_call(self, _, event: CallOfferEv):
         self.__event.on_call(event)
-        
+
     @staticmethod
     def detect_message_type(msg) -> str | None:
         message_types = {
@@ -94,9 +99,13 @@ class Void(NewClient):
             if msg.HasField(attr):
                 return desc
         return None
-            
+
     def filter_admin_users(self, participants):
-        return [participant.JID.User for participant in participants if participant.IsAdmin]
+        return [
+            participant.JID.User
+            for participant in participants
+            if participant.IsAdmin
+        ]
 
     def on_pair_status(self, _: NewClient, message: PairStatusEv):
         self.log.info(f"logged as {message.ID.User}")

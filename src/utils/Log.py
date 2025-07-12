@@ -4,6 +4,7 @@ from colorama import Fore, Style, init
 # Initialize colorama
 init(autoreset=True)
 
+
 class Log:
     IST = timezone(timedelta(hours=5, minutes=30))
 
@@ -11,7 +12,7 @@ class Log:
     LEVEL_COLORS = {
         "info": Style.BRIGHT + Fore.GREEN,
         "debug": Style.BRIGHT + Fore.BLUE,
-        "warn": Style.BRIGHT + Fore.MAGENTA,   # Pink-ish
+        "warn": Style.BRIGHT + Fore.MAGENTA,  # Pink-ish
         "error": Style.BRIGHT + Fore.RED,
         "critical": Style.BRIGHT + Fore.RED,
     }
