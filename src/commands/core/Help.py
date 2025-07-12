@@ -49,7 +49,7 @@ class Command(BaseCommand):
 ⏱️ *Cooldown:* {cooldown}
 📝 *Description:* {content}
 
-ℹ️ _<> means required and [ ] means optional. Do not type the brackets._
+ℹ️ <> means required and [ ] means optional. Do not type the brackets.
 """
             return self.client.reply_message(help_text, M)
 
@@ -67,7 +67,7 @@ class Command(BaseCommand):
         }
 
         header = f"""
-🤖 *COMMAND LIST* 🤖
+> 🎫  *{self.client.config.name} Command List*  🎫
 
 💡 *Prefix:* `{prefix}`
 
@@ -79,7 +79,7 @@ https://www.instagram.com/das_abae
 
         for cat in category_names:
             emoji = emoji_map.get(cat, "🔹")
-            lines.append(f"\n{emoji} *{cat.upper()}* {emoji}\n")
+            lines.append(f"\n> ━━━━❰ {emoji} *{cat.upper()}* {emoji} ❱━━━━\n")
             block = []
             for cmd in grouped[cat]:
                 cfg = cmd.config
