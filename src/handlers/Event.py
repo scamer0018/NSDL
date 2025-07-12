@@ -20,7 +20,13 @@ class Event:
             "🚫 You have been *blocked* for calling the bot.\nPlease refrain from calling bots in the future."
         )
         self.__client.update_blocklist(jid, self.__client.BlocklistAction.BLOCK)
-
+        
+    def on_joined(self, event: JoinedGroupEv):
+        self.__client.send_message(
+            event.GroupInfo.JID, 
+            f"Thanks for adding me in {event.GroupInfo.GroupName.Name}!!\nUse {self.__client.config.prefix}help to see the commands"
+        )
+        
     def on_groupevent(self, event: GroupInfoEv):
         group = self.__client.db.get_group_by_number(event.JID.User)
 

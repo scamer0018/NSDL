@@ -101,38 +101,42 @@ class Message:
 
         cmd.exec(M, contex)
 
+
     def load_commands(self, folder_path):
         self.__client.log.info("Loading commands...")
 
-        for root, _, files in os.walk(folder_path):
-            if root == folder_path:
-                continue 
-
-            for filename in files:
-                if filename.endswith(".py") and not filename.startswith("_"):
-                    file_path = os.path.join(root, filename)
-                    module_name = os.path.splitext(os.path.basename(filename))[0]
-
-                    try:
-                        spec = importlib.util.spec_from_file_location(module_name, file_path)
-                        if not spec or not spec.loader:
-                            raise ImportError(f"Cannot load spec for {file_path}")
-
-                        module = importlib.util.module_from_spec(spec)
-                        spec.loader.exec_module(module)
-
-                        CommandClass = getattr(module, "Command")
-                        command_instance = CommandClass(self.__client, self)
-
-                        self.commands[command_instance.config.command] = command_instance
-                        self.__client.log.info(
-                            f"Loaded: {command_instance.config.command} from {command_instance.config.category}"
-                        )
-
-                    except Exception as e:
-                        self.__client.log.error(f"Failed to load {filename}: {e}")
-
-        self.__client.log.info(f"Successfully loaded {len(self.commands)} commands.")
+        all_files = self.__client.utils.readdir_recursive(folder_path)
+    
+        for file_path in all_files:
+            if not file_path.endswith(".py") or os.path.basename(file_path).startswith("_"):
+                continue
+    
+            try:
+                module_name = os.path.splitext(os.path.basename(file_path))[0]
+    
+                spec = importlib.util.spec_from_file_location(module_name, file_path)
+                if not spec or not spec.loader:
+                    raise ImportError(f"Cannot load spec for {file_path}")
+    
+                module = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(module)
+    
+                CommandClass = getattr(module, "Command", None)
+                if not CommandClass:
+                    raise AttributeError(f"No class 'Command' found in {file_path}")
+    
+                command_instance = CommandClass(self.__client, self)
+                command_id = command_instance.config.command
+                self.commands[command_id] = command_instance
+    
+                self.__client.log.info(
+                    f"✅ Loaded: {command_id} from {command_instance.config.get('category', 'Uncategorized')}"
+                )
+    
+            except Exception as e:
+                self.__client.log.error(f"❌ Failed to load {file_path}: {e}")
+    
+        self.__client.log.info(f"✅ Successfully loaded {len(self.commands)} commands.")
 
     def parse_args(self, raw):
         args = raw.split(' ')

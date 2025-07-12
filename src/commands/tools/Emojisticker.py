@@ -5,7 +5,7 @@ class Command(BaseCommand):
     def __init__(self, client, handler):
         super().__init__(client, handler, {
             "command": "emojisticker",
-            "category": "fun",
+            "category": "tools",
             "description": {
                 "content": "Send an emoji as a sticker.",
                 "usage": "<emoji>"

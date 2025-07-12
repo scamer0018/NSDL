@@ -14,6 +14,7 @@ from neonize.events import (
     event
 )
 
+
 sys.path.insert(0, os.getcwd())
 
 def interrupted(*_):
@@ -27,8 +28,8 @@ class Void(NewClient):
         self.event(MessageEv)(self.on_message)
         self.event(ConnectedEv)(self.on_connected)
         self.event(GroupInfoEv)(self.on_groupevent)
-        self.event(JoinedGroupEv)(self.on_groupevent)
-        self.event(CallOfferEv)(self.on_groupevent)
+        self.event(JoinedGroupEv)(self.on_joined)
+        self.event(CallOfferEv)(self.on_call)
         self.event(PairStatusEv)(self.on_pair_status)
 
         # Register all the methords from client utils
@@ -73,6 +74,9 @@ class Void(NewClient):
 
     def on_groupevent(self, _, event: GroupInfoEv): 
         self.__event.on_groupevent(event)
+        
+    def on_joined(self, _, event: JoinedGroupEv):
+        self.__event.on_joined(event)
 
     def on_call(self, _, event: CallOfferEv):
         self.__event.on_call(event)

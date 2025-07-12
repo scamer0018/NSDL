@@ -49,6 +49,16 @@ class Utils:
             for file in files:
                 results.append(os.path.join(root, file))
         return results
+    
+    @staticmethod
+    def to_small_caps(text):
+        map_small = {
+            'a': 'ᴀ', 'b': 'ʙ', 'c': 'ᴄ', 'd': 'ᴅ', 'e': 'ᴇ', 'f': 'ꜰ', 'g': 'ɢ',
+            'h': 'ʜ', 'i': 'ɪ', 'j': 'ᴊ', 'k': 'ᴋ', 'l': 'ʟ', 'm': 'ᴍ', 'n': 'ɴ',
+            'o': 'ᴏ', 'p': 'ᴘ', 'q': 'Q', 'r': 'ʀ', 's': 'ꜱ', 't': 'ᴛ',
+            'u': 'ᴜ', 'v': 'ᴠ', 'w': 'ᴡ', 'x': 'x', 'y': 'ʏ', 'z': 'ᴢ'
+        }
+        return ''.join(map_small.get(c.lower(), c) for c in text)
 
     @staticmethod
     def buffer_to_base64(buffer: bytes) -> str:
