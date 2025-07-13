@@ -12,7 +12,7 @@ class Command(BaseCommand):
                 "category": "group",
                 "description": {
                     "content": "Demote a user from admin.",
-                    "usage": "Mention or reply to user",
+                    "usage": "<@mention> | <quote>",
                 },
                 "admin": True,
                 "group": True,

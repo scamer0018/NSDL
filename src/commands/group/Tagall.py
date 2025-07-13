@@ -12,7 +12,7 @@ class Command(BaseCommand):
                 "aliases": ["mentionall", "ta"],
                 "description": {
                     "content": "Mention all group members.",
-                    "usage": "[optional text]",
+                    "usage": "<optional_text>",
                 },
                 "group": True,
                 "admin": True,
