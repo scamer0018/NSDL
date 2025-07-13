@@ -8,7 +8,7 @@ import asyncio
 import requests
 from typing import Union
 from bs4 import BeautifulSoup
-from moviepy.editor import VideoFileClip
+from moviepy.video.io.VideoFileClip import VideoFileClip
 from typing import List, Set, Any
 
 
