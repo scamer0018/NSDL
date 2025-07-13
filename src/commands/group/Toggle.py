@@ -14,6 +14,8 @@ class Command(BaseCommand):
                     "content": "Enable or disable group features like mod or event.",
                     "usage": "<mod|event>",
                 },
+                "group": True,
+                "admin": True,
                 "exp": 0,
             },
         )
@@ -21,7 +23,8 @@ class Command(BaseCommand):
     def exec(self, M: MessageClass, contex):
         if not contex.text:
             return self.client.reply_message(
-                "❌ *Usage:* #toggle <mod|events>", M
+                "❌ *Missing input!*\nUse: `#toggle <mod|events>` to enable or disable group features.",
+                M,
             )
 
         feature = contex.text.strip().lower()

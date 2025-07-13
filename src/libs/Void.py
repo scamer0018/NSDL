@@ -1,3 +1,4 @@
+import logging
 import os
 import sys
 from neonize import NewClient
@@ -11,6 +12,8 @@ from neonize.events import (
     CallOfferEv,
     GroupInfoEv,
     PairStatusEv,
+    LoggedOutEv,
+    DisconnectedEv,
     event,
 )
 
@@ -20,6 +23,9 @@ sys.path.insert(0, os.getcwd())
 
 def interrupted(*_):
     event.set()
+
+
+log.setLevel(logging.INFO)
 
 
 class Void(NewClient):
@@ -33,6 +39,9 @@ class Void(NewClient):
         self.event(JoinedGroupEv)(self.on_joined)
         self.event(CallOfferEv)(self.on_call)
         self.event(PairStatusEv)(self.on_pair_status)
+        self.event(LoggedOutEv)(self.on_logout)
+        self.event(DisconnectedEv)(self.on_disconnect)
+        self.event.paircode(self.on_paircode)
 
         # Register all the methords from client utils
         self.extract_text = extract_text
@@ -76,6 +85,20 @@ class Void(NewClient):
         self.log.info(
             f"⚡ Connected to {self.config.name} and prefix is {self.config.prefix}"
         )
+
+    def on_logout(self, _: NewClient, __: ConnectedEv):
+        self.log.info("Logged out. Deleting the session to recreate it")
+        self.utils.find_and_delete_all(self.db_path)
+
+    def on_disconnect(self, _: NewClient, __: ConnectedEv):
+        self.log.info("Bot got disconnected from the server")
+        self.connect()
+
+    def on_paircode(self, _: NewClient, code: str, connected: bool = True):
+        if connected:
+            self.log.info("Pair code successfully processed: %s", code)
+        else:
+            self.log.info("Pair code: %s", code)
 
     def on_groupevent(self, _, event: GroupInfoEv):
         self.__event.on_groupevent(event)

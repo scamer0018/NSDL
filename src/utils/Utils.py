@@ -51,6 +51,22 @@ class Utils:
         return results
 
     @staticmethod
+    def find_and_delete_all(filename, search_path="."):
+        deleted_count = 0
+        for root, _, files in os.walk(search_path):
+            if filename in files:
+                file_path = os.path.join(root, filename)
+                try:
+                    os.remove(file_path)
+                    print(f"[Deleted] {file_path}")
+                    deleted_count += 1
+                except Exception as e:
+                    print(f"[ERROR] Failed to delete {file_path}: {e}")
+        if deleted_count == 0:
+            print("[info] No matching files found.")
+        return deleted_count
+
+    @staticmethod
     def to_small_caps(text):
         map_small = {
             "a": "ᴀ",

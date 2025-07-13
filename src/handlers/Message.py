@@ -1,6 +1,7 @@
 from datetime import datetime
 import os
 import importlib.util
+import re
 from models.User import User
 from models.Command import Command
 from libs import Void, MessageClass
@@ -19,6 +20,8 @@ class Message:
         chat_type = "CMD" if is_command else "MSG"
         chat_name = M.group.GroupName.Name if M.chat == "group" else "DM"
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        self.wa_link_detector(M)
 
         if is_command:
             command = contex.cmd
@@ -93,9 +96,10 @@ class Message:
             )
 
         if getattr(cmd.config, "admin", False) and not M.isAdminMessage:
-            if self.__client.build_jid(
-                self.__client.get_me().JID
-            ) not in self.__client.filter_admin_users(M.group.Participants):
+            if (
+                self.__client.get_me().JID.User
+                not in self.__client.filter_admin_users(M.group.Participants)
+            ):
                 return self.__client.reply_message(
                     "🤖 The *bot must be an admin* to execute these commands properly.",
                     M,
@@ -120,6 +124,42 @@ class Message:
             )
 
         cmd.exec(M, contex)
+
+    def wa_link_detector(self, M: MessageClass):
+        group = self.__client.db.get_group_by_number(M.gcjid.User)
+
+        if not group.mod:
+            return
+        pattern = re.compile(r"https://chat\.whatsapp\.com/\S+", re.IGNORECASE)
+        admins = self.__client.filter_admin_users(M.group.Participants)
+
+        if not M.isAdminMessage:
+            for url in M.urls:
+                if pattern.search(url):
+                    try:
+                        link_info = self.__client.get_group_info_from_link(
+                            url.split("?")[0]
+                        )
+                        if link_info.GroupName.Name != M.group.GroupName.Name:
+                            if self.__client.get_me().JID.User in admins:
+                                from neonize.utils import ParticipantChange
+
+                                self.__client.update_group_participants(
+                                    M.gcjid,
+                                    [self.__client.build_jid(M.sender.number)],
+                                    ParticipantChange.REMOVE,
+                                )
+
+                            mentions = [f"@{admin}" for admin in admins]
+                            text = (
+                                "🚫 A *suspicious group link* was detected in the chat.\n\n"
+                                + " ".join(mentions)
+                            )
+
+                            self.__client.send_message(M.gcjid, text)
+
+                    except Exception as e:
+                        self.__client.log.error(f"[WA_LINK_DETECTOR] {e}")
 
     def load_commands(self, folder_path):
         self.__client.log.info("Loading commands...")
