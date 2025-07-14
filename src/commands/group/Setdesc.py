@@ -24,7 +24,7 @@ class Command(BaseCommand):
             desc = self.client.extract_text(M.quoted) or contex.text
             if not desc:
                 return self.client.reply_message(
-                    f"📝 Please provide the new group description.\nExample: `{self.client.config.prefix}settopic Welcome to the Void Group!`",
+                    f"📝 Please provide the new group description — Example: *{self.client.config.prefix}settopic Welcome to the Void Group!*",
                     M,
                 )
 

@@ -23,7 +23,7 @@ class Command(BaseCommand):
         try:
             if not contex.text:
                 return self.client.reply_message(
-                    f"✏️ Please provide the new group name.\nExample: `{self.client.config.prefix}setname Cool Group`",
+                    f"✏️ Please provide the new group name — Example: *{self.client.config.prefix}setname Cool Group*",
                     M,
                 )
 
@@ -31,7 +31,7 @@ class Command(BaseCommand):
 
             if len(new_name) > 100:
                 return self.client.reply_message(
-                    "🚫 Group name must be under 100 characters.", M
+                    "🚫 Group name must be under *100* characters.", M
                 )
 
             self.client.set_group_name(M.gcjid, new_name)

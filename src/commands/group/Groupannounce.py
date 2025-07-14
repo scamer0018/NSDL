@@ -23,14 +23,14 @@ class Command(BaseCommand):
         try:
             if not contex.args:
                 return self.client.reply_message(
-                    "⚠️ Please specify `on` or `off`.\nExample: `.groupannounce on`",
+                    f"⚠️ Please specify *on* or *off*. Example: {self.client.config.prefix}groupannounce on",
                     M,
                 )
 
             option = contex.args[0].lower()
             if option not in ["on", "off"]:
                 return self.client.reply_message(
-                    "❌ Invalid option. Use `on` or `off`.", M
+                    "❌ Invalid option. Use *on* or *off*.", M
                 )
 
             is_announce = option == "on"

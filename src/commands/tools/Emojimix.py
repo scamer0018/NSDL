@@ -26,7 +26,7 @@ class Command(BaseCommand):
         text = (contex.text or "").strip()
         if "+" not in text:
             return self.client.reply_message(
-                "❌ *Please provide two emojis separated by `+`*\n\nExample: `😎+🔥`",
+                "❌ Please provide two emojis separated by *+* — Use {self.client.config.prefix}emojimix 😕+😢",
                 M,
             )
 

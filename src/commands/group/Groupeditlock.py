@@ -23,14 +23,14 @@ class Command(BaseCommand):
         try:
             if not contex.args:
                 return self.client.reply_message(
-                    "⚠️ Please specify `on` or `off`.\nExample: `.groupeditlock on`",
+                    "⚠️ Please specify *on* or *off*. Example: {self.client.config.prefix}groupeditlock on",
                     M,
                 )
 
             value = contex.args[0].lower()
             if value not in ["on", "off"]:
                 return self.client.reply_message(
-                    "❌ Invalid option. Use `on` or `off`.", M
+                    "❌ Invalid option. Use *on* or *off*.", M
                 )
 
             locked = value == "on"

@@ -26,13 +26,11 @@ class Command(BaseCommand):
         emoji = (contex.text or "").strip()
 
         if not emoji:
-            return self.client.reply_message(
-                "❗ Please provide an emoji.\n\nExample: `🙂`", M
-            )
+            return self.client.reply_message("❗ Please provide an *emoji*.", M)
 
         if not self.is_emoji(emoji):
             return self.client.reply_message(
-                "🚫 That doesn't look like a valid emoji.", M
+                "🚫 That doesn't look like a *valid emoji*.", M
             )
 
         try:

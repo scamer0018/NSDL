@@ -15,8 +15,8 @@ from typing import List, Set, Any
 class Utils:
 
     @staticmethod
-    async def sleep(ms: int):
-        await asyncio.sleep(ms / 1000)
+    def sleep(ms: int):
+        asyncio.sleep(ms / 1000)
 
     @staticmethod
     def fetch(url: str) -> Union[dict, None]:

@@ -21,29 +21,36 @@ class Command(BaseCommand):
         )
 
     def exec(self, M: MessageClass, contex):
-        if not contex.text:
-            return self.client.reply_message(
-                "❌ *Missing input!*\nUse: `#toggle <mod|events>` to enable or disable group features.",
-                M,
+        try:
+            if not contex.text:
+                return self.client.reply_message(
+                    "❌ *Missing input!* Use: *#toggle <mod|events>* to enable or disable group features.",
+                    M,
+                )
+
+            feature = contex.text.strip().lower()
+            number = M.gcjid.User.split("@")[0]
+
+            if feature not in ("mod", "events"):
+                return self.client.reply_message(
+                    "❌ Only *mod* or *events* features can be toggled.", M
+                )
+
+            group = self.client.db.get_group_by_number(number)
+            current_status = getattr(group, feature, False)
+            new_status = not current_status
+
+            if feature == "mod":
+                self.client.db.set_group_mod(number, new_status)
+            else:
+                self.client.db.set_group_events(number, new_status)
+
+            emoji = "✅" if new_status else "🚫"
+            msg = f"{emoji} *{feature.upper()}* feature has been *{'enabled' if new_status else 'disabled'}* for this group."
+            self.client.reply_message(msg, M)
+
+        except Exception as e:
+            self.client.reply_message(
+                "⚠️ An error occurred while toggling the feature.", M
             )
-
-        feature = contex.text.strip().lower()
-        number = M.gcjid.User.split("@")[0]
-
-        if feature not in ("mod", "events"):
-            return self.client.reply_message(
-                "❌ Only *mod* or *events* features can be toggled.", M
-            )
-
-        group = self.client.db.get_group_by_number(number)
-        current_status = getattr(group, feature, False)
-        new_status = not current_status
-
-        if feature == "mod":
-            self.client.db.set_group_mod(number, new_status)
-        else:
-            self.client.db.set_group_events(number, new_status)
-
-        emoji = "✅" if new_status else "🚫"
-        msg = f"{emoji} *{feature.upper()}* feature has been *{'enabled' if new_status else 'disabled'}* for this group."
-        self.client.reply_message(msg, M)
+            self.client.log.error(f"[ToggleError] {e}")
