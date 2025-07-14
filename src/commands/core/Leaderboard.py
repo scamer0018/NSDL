@@ -10,7 +10,7 @@ class Command(BaseCommand):
             handler,
             {
                 "command": "leaderboard",
-                "category": "profile",
+                "category": "core",
                 "aliases": ["lb", "ranks"],
                 "description": {
                     "content": "View global or group leaderboard based on EXP.",
