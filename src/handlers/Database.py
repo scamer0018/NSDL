@@ -7,6 +7,9 @@ from utils import DynamicConfig
 
 
 class Database:
+
+    models = {"user": User, "group": Group, "command": Command}
+
     def __init__(self, uri):
         connect(uri)
 

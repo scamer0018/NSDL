@@ -162,6 +162,22 @@ class Utils:
         return set(re.findall(r"https?://[^\s]+", text))
 
     @staticmethod
+    def format_timedelta(delta):
+        days = delta.days
+        seconds = delta.seconds
+        hours, remainder = divmod(seconds, 3600)
+        minutes, _ = divmod(remainder, 60)
+
+        parts = []
+        if days:
+            parts.append(f"{days}d")
+        if hours:
+            parts.append(f"{hours}h")
+        if minutes:
+            parts.append(f"{minutes}m")
+        return " ".join(parts) if parts else "just now"
+
+    @staticmethod
     def gif_to_mp4(gif: bytes) -> bytes:
         temp_dir = tempfile.mkdtemp()
         gif_path = os.path.join(temp_dir, "input.gif")
