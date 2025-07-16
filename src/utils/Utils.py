@@ -8,7 +8,6 @@ import asyncio
 import requests
 from typing import Union
 from bs4 import BeautifulSoup
-from moviepy.video.io.VideoFileClip import VideoFileClip
 from typing import List, Set, Any
 
 
@@ -176,30 +175,3 @@ class Utils:
         if minutes:
             parts.append(f"{minutes}m")
         return " ".join(parts) if parts else "just now"
-
-    @staticmethod
-    def gif_to_mp4(gif: bytes) -> bytes:
-        temp_dir = tempfile.mkdtemp()
-        gif_path = os.path.join(temp_dir, "input.gif")
-        mp4_path = os.path.join(temp_dir, "output.mp4")
-
-        try:
-            with open(gif_path, "wb") as f:
-                f.write(gif)
-
-            clip = VideoFileClip(gif_path)
-            clip.write_videofile(mp4_path, codec="libx264", logger=None)
-
-            with open(mp4_path, "rb") as f:
-                return f.read()
-
-        except Exception as e:
-            print(f"[ERROR] gif_to_mp4(): {e}")
-            return b""
-
-        finally:
-            shutil.rmtree(temp_dir, ignore_errors=True)
-
-    @staticmethod
-    def capitalize(s: str) -> str:
-        return s.capitalize() if s else s

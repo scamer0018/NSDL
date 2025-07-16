@@ -88,7 +88,7 @@ class Message:
 
         if (
             getattr(cmd.config, "devOnly", False)
-            and M.Info.Sender.User not in self.__client.config.mods
+            and M.sender.number not in self.__client.config.mods
         ):
             return self.__client.reply_message(
                 "⚠️ *Oops!* Some of these commands are *exclusively for developers*.",

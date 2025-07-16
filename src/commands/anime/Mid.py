@@ -22,7 +22,7 @@ class Command(BaseCommand):
         query = contex.text.strip().split() if contex.text else []
         if not query or not query[0].isdigit():
             return self.client.reply_message(
-                "❌ Looks like you forgot to type the manga ID.", M
+                "❌ Looks like you forgot to type the *manga ID*.", M
             )
 
         manga_id = query[0]
@@ -40,20 +40,19 @@ class Command(BaseCommand):
             manga = results[0]
 
             title = manga["title"]
-            message = f"""📚 *{title['english']}* | *{title['romaji']}*
-🈶 *Japanese:* {title.get("native", "N/A")}
-📦 *Type:* {manga.get("format", "N/A")}
-⚠️ *Is Adult:* {manga.get("isAdult", False)}
-📌 *Status:* {manga.get("status", "N/A")}
-📖 *Chapters:* {manga.get("chapters", "N/A")}
-📦 *Volumes:* {manga.get("volumes", "N/A")}
-⏳ *First Aired:* {manga.get("startDate", "N/A")}
-🕰️ *Last Aired:* {manga.get("endDate", "N/A")}
-🎭 *Genres:* {", ".join(manga.get("genres", []))}
-🎬 *Trailer:* https://youtu.be/{manga.get("trailer", {}).get("id", "null")}
-
-📄 *Description:*
-{manga.get("description", "No description available.")}"""
+            message = ""
+            message += f"📚 *{title['english']}* | *{title['romaji']}*\n"
+            message += f"🈶 *Japanese:* {title['native']}\n"
+            message += f"📦 *Type:* {manga['format']}\n"
+            message += f"⚠️ *Is Adult:* {'Yes' if manga['isAdult'] else 'No'}\n"
+            message += f"📌 *Status:* {manga['status']}\n"
+            message += f"📖 *Chapters:* {manga['chapters']}\n"
+            message += f"📦 *Volumes:* {manga['volumes']}\n"
+            message += f"⏳ *First Aired:* {manga['startDate']}\n"
+            message += f"🕰️ *Last Aired:* {manga['endDate']}\n"
+            message += f"🎭 *Genres:* {', '.join(manga['genres'])}\n"
+            message += f"🎬 *Trailer:* https://youtu.be/{manga['trailer']['id'] if manga.get('trailer') else 'null'}\n\n"
+            message += f"📄 *Description:*\n_{manga['description']}_"
 
             image = self.client.utils.fetch_buffer(manga["coverImage"])
             self.client.send_image(M.gcjid, image, message.strip(), M)

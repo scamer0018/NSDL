@@ -51,15 +51,6 @@ class Database:
         except DoesNotExist:
             self._update_or_create_user(number, {"exp": exp})
 
-    def set_user_icon(self, number, icon_url):
-        self._update_or_create_user(number, {"icon": icon_url})
-
-    def set_user_bio(self, number, bio):
-        self._update_or_create_user(number, {"bio": bio})
-
-    def set_user_username(self, number, username):
-        self._update_or_create_user(number, {"username": username})
-
     def set_group_events(self, number, events_status):
         self._update_or_create_group(number, {"events": events_status})
 
@@ -82,18 +73,16 @@ class Database:
                 {"number": number, "mod": False, "events": False}
             )
 
-    def enable_command(self, config, reason, enable):
+    def enable_command(self, name, reason, enable):
         try:
-            command = Command.objects.raw({"name": config.name}).first()
-            command.aliases = getattr(config, "aliases", [])
+            command = Command.objects.raw({"name": name}).first()
             command.reason = reason
             command.enable = enable
             command.created_at = self.now()
             command.save()
         except DoesNotExist:
             Command(
-                name=config.name,
-                aliases=getattr(config, "aliases", []),
+                name=name,
                 reason=reason,
                 enable=enable,
                 created_at=self.now(),
@@ -104,6 +93,4 @@ class Database:
             return Command.objects.raw({"name": name}).first()
         except DoesNotExist:
             Command(name=name).save()
-            return DynamicConfig(
-                {"name": name, "aliases": [], "reason": "", "enable": True}
-            )
+            return DynamicConfig({"name": name, "reason": "", "enable": True})

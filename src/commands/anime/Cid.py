@@ -23,7 +23,7 @@ class Command(BaseCommand):
 
         if not query or not query.isdigit():
             return self.client.reply_message(
-                "❌ Looks like you forgot to type a valid character ID.", M
+                "❌ Looks like you forgot to type a valid *character ID*.", M
             )
 
         try:

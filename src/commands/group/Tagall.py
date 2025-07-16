@@ -44,7 +44,7 @@ class Command(BaseCommand):
             )
             message = f"{prefix_text}\n\n" + " ".join(tags)
 
-            self.client.send_message(M.gcjid, message, ghost_mentions=mentions)
+            self.client.send_message(M.gcjid, message)
 
         except Exception as e:
             self.client.reply_message(

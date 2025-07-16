@@ -22,7 +22,7 @@ class Command(BaseCommand):
         query = contex.text.strip() if contex.text else None
         if not query:
             return self.client.reply_message(
-                f"❌ Looks like you forgot to type the manga name.", M
+                f"❌ Looks like you forgot to type the *manga name*.", M
             )
 
         try:

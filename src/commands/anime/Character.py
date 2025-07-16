@@ -22,7 +22,7 @@ class Command(BaseCommand):
         query = contex.text.strip() if contex.text else None
         if not query:
             return self.client.reply_message(
-                f"❌ Looks like you forgot to type the character name.",
+                f"❌ Looks like you forgot to type the *character name*.",
                 M,
             )
 
@@ -32,7 +32,7 @@ class Command(BaseCommand):
 
             if not characters:
                 return self.client.reply_message(
-                    "🤔 Hmm... I couldn't find any character matching your search. Maybe double-check the name?",
+                    "🤔 Hmm... I couldn't find any *character* matching your search. Maybe double-check the name?",
                     M,
                 )
 

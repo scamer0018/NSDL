@@ -36,20 +36,22 @@ class Command(BaseCommand):
                 return self.client.reply_message("❌ Command not found.", M)
 
             options = command.config
+            if (
+                M.sender.number not in self.client.config.mods
+                and options.category == "dev"
+            ):
+                return self.client.reply_message("❌ Command not found.", M)
             desc = options.get("description", {})
             aliases = ", ".join(options.get("aliases", [])) or "No aliases"
             usage = f"{prefix}{options.command} {desc.get('usage', '')}".strip()
-            cooldown = f"{options.get('cooldown', 10)}s"
             content = desc.get("content", "No description available")
 
             help_text = f"""\
 🔰 *Command:* {options.command}
 🔁 *Aliases:* {aliases}
+ℹ️ *Category:* {options.category.capitalize()}
 ⚙️ *Usage:* {usage}
-⏱️ *Cooldown:* {cooldown}
 📝 *Description:* {content}
-
-ℹ️ <> means required and [ ] means optional. Do not type the brackets.
 """
             return self.client.reply_message(help_text, M)
 
@@ -59,7 +61,7 @@ class Command(BaseCommand):
             cat = cmd.config.get("category", "Uncategorized").capitalize()
             grouped.setdefault(cat, []).append(cmd)
 
-        emoji_array = ["📗", "👑", "🎉", "🔨", "🎈", "🎨", "🛠️", "🎊", "💎"]
+        emoji_array = ["🎎", "🔰", "🧑‍💻", "🍥", "🔊", "🔍", "🧰"]
         category_names = sorted(grouped.keys())
         emoji_map = {
             cat: emoji_array[i % len(emoji_array)]
@@ -79,6 +81,8 @@ https://www.instagram.com/das_abae
 
         for cat in category_names:
             emoji = emoji_map.get(cat, "🔹")
+            if M.sender.number not in self.client.config.mods and cat == "Dev":
+                continue
             lines.append(f"\n> ━━━━❰ {emoji} *{cat.upper()}* {emoji} ❱━━━━\n")
             block = []
             for cmd in grouped[cat]:
