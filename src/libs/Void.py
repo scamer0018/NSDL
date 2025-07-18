@@ -12,8 +12,6 @@ from neonize.events import (
     CallOfferEv,
     GroupInfoEv,
     PairStatusEv,
-    LoggedOutEv,
-    DisconnectedEv,
     event,
 )
 
@@ -32,6 +30,8 @@ class Void(NewClient):
     def __init__(self, db_path, config, log):
         super().__init__(db_path)
 
+        self.__msg_id = []
+
         # Register the methods as event handlers
         self.event(MessageEv)(self.on_message)
         self.event(ConnectedEv)(self.on_connected)
@@ -39,8 +39,6 @@ class Void(NewClient):
         self.event(JoinedGroupEv)(self.on_joined)
         self.event(CallOfferEv)(self.on_call)
         self.event(PairStatusEv)(self.on_pair_status)
-        self.event(LoggedOutEv)(self.on_logout)
-        self.event(DisconnectedEv)(self.on_disconnect)
         self.event.paircode(self.on_paircode)
 
         # Register all the methords from client utils
@@ -76,23 +74,17 @@ class Void(NewClient):
         self.log = log
 
     def on_message(self, _: NewClient, message: MessageEv):
-        from libs import MessageClass
+        if message.Info.ID not in self.__msg_id:
+            from libs import MessageClass
 
-        self.__message.handler(MessageClass(self, message).build())
+            self.__msg_id.append(message.Info.ID)
+            self.__message.handler(MessageClass(self, message).build())
 
     def on_connected(self, _: NewClient, __: ConnectedEv):
         self.__message.load_commands("src/commands")
         self.log.info(
             f"⚡ Connected to {self.config.name} and prefix is {self.config.prefix}"
         )
-
-    def on_logout(self, _: NewClient, __: ConnectedEv):
-        self.log.info("Logged out. Deleting the session to recreate it")
-        self.utils.find_and_delete_all(self.db_path)
-
-    def on_disconnect(self, _: NewClient, __: ConnectedEv):
-        self.log.info("Bot got disconnected from the server")
-        self.connect()
 
     def on_paircode(self, _: NewClient, code: str, connected: bool = True):
         if connected:

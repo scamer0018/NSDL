@@ -1,3 +1,9 @@
-neonize==0.3.10
-colorama==0.4.6
-requests==2.31.0
+https://github.com/Nubuki-all/neonize
+colorama
+requests
+dotenv
+bs4
+wheel
+python-magic
+tzdata
+regex

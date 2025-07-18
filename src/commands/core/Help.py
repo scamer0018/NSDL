@@ -61,7 +61,7 @@ class Command(BaseCommand):
             cat = cmd.config.get("category", "Uncategorized").capitalize()
             grouped.setdefault(cat, []).append(cmd)
 
-        emoji_array = ["🎎", "🔰", "🧑‍💻", "🍥", "🔊", "🔍", "🧰"]
+        emoji_array = ["🎎", "🔰", "🧑‍💻", "🍥", "🔊", "🎼", "🔍", "🧰"]
         category_names = sorted(grouped.keys())
         emoji_map = {
             cat: emoji_array[i % len(emoji_array)]

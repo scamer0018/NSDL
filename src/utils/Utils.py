@@ -3,6 +3,7 @@ import re
 import random
 import base64
 import shutil
+import string
 import tempfile
 import asyncio
 import requests
@@ -159,6 +160,29 @@ class Utils:
     @staticmethod
     def get_urls(text: str) -> Set[str]:
         return set(re.findall(r"https?://[^\s]+", text))
+
+    @staticmethod
+    def random_alpha_string(length=10):
+        return "".join(random.choices(string.ascii_letters, k=length))
+
+    @staticmethod
+    def format_duration(seconds):
+        if not seconds:
+            return "N/A"
+        m, s = divmod(seconds, 60)
+        h, m = divmod(m, 60)
+        if h:
+            return f"{h:02}:{m:02}:{s:02}"
+        return f"{m:02}:{s:02}"
+
+    @staticmethod
+    def format_filesize(size_bytes):
+        if not size_bytes:
+            return "Unknown"
+        for unit in ["B", "KB", "MB", "GB", "TB"]:
+            if size_bytes < 1024:
+                return f"{size_bytes:.2f} {unit}"
+            size_bytes /= 1024
 
     @staticmethod
     def format_timedelta(delta):
