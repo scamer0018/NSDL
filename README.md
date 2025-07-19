@@ -153,6 +153,6 @@ Follow these steps to install and run **WhatsApp-Botto-Py** on Termux:
 
 ## 🧾 **License**
 
-This project is open-sourced under the **MIT License**.
+This project is open-sourced under the **GPL-3.0 license**.
 
 > Made with ❤️ by [Debanjan Das](https://github.com/Debanjan-San)
