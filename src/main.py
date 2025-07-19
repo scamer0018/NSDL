@@ -15,6 +15,10 @@ def main():
         Log.error("❌ Phone number is required.")
         sys.exit(1)
 
+    if not config.uri:
+        Log.error("❌ Mongodb url is required.")
+        sys.exit(1)
+
     client = Void(config.session, config, Log)
     client.PairPhone(phone=number, show_push_notification=True)
 

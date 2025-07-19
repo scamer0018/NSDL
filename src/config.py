@@ -10,16 +10,11 @@ def get_config():
         {
             "name": os.getenv("NAME", "Void"),
             "session": os.getenv("SESSION", "db.sqlite3"),
-            "number": os.getenv("NUMBER", "27782087369"),
+            "number": os.getenv("NUMBER"),
             "prefix": os.getenv("PREFIX", "#"),
-            "uri": os.getenv(
-                "URI",
-                "mongodb+srv://stumnmake:abhinavvijay@cluster0.kbpomy2.mongodb.net/Alice?retryWrites=true&w=majority",
-            ),
+            "uri": os.getenv("URI"),
             "mods": (
-                os.getenv("MODS", "").split(",")
-                if os.getenv("MODS")
-                else ["27782087369", "917003213983", "919832361550"]
+                os.getenv("MODS", "").split(",") if os.getenv("MODS") else []
             ),
         }
     )
