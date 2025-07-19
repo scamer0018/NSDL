@@ -1,27 +1,31 @@
 # WhatsApp-Botto-Py
+WhatsApp-Botto-Py is a whatsapp bot created with [neonize](https://github.com/krypton-byte/neonize) and written in python, and this is my first pthon open source project, if there is a mistake feel free to open a issues.
 
-## ✅ Bot Overview
+
+**NOTE:** I can't guarantee you will not be blocked by using this code, although it has worked for me. WhatsApp does not allow bots or unofficial clients on their platform, so this shouldn't be considered totally safe.
+
+### **Bot Overview**
 - **Bot Name**: `WhatsApp-Botto-Py`
 - **Built With**: Python
-- **Primary Library**: [`neonize`](https://github.com/krypton-byte/neonize) (WhatsApp Web API for Python)
+- **Primary Library**: [neonize](https://github.com/krypton-byte/neonize) (WhatsApp Web API for Python)
 - **Database**: MongoDB
 - **For Termux**: Uses `tur-repo` MongoDB variant
 - **Session File**: No QR scanning, uses direct session generation (`db.sqlite3`)
 - **Terminal Command Setup**: Copy-paste and run link system (Termux support)
 
-## ✅ Features
+### **Features**
 - Easy plug-and-play installation via Termux
 - MongoDB + local SQLite combo
 - In-built session file generator to avoid QR hassle
 - Modular command handler
 - Fully compatible with Termux, VPS, and local machines
 
-## ✅ Hosting Options
+### **Hosting Options**
 - **Termux** (preferred for local)
 - **VPS / Ubuntu / Linux machine**
 - **Windows**
 
-## ✅ Configuration Explained
+### **Configuration Explained**
 Inside your `.env` or config file:
 
 ```env
@@ -42,7 +46,7 @@ MODS=27782xxxxxx,91700xxxxxx,91983xxxxxx
 - Make sure `NUMBER` is set to your bot's number, or it won’t connect.
 - **Do not modify the MongoDB URI** if you're using Termux – it’s tailored for local hosting via `tur-mongodb`.
 
-## ✅ Example: Sending a Message in Code
+### **✅ Example: Sending a Message in Code**
 
 You can respond to messages or send messages manually using:
 
@@ -50,7 +54,7 @@ You can respond to messages or send messages manually using:
 self.client.reply_message(message, "Your reply here")
 ```
 
-## ✅ Creating Your Own Command
+### **✅ Creating Your Own Command**
 
 1. Go to the `commands/` folder.
 2. Create a new Python file (e.g., `hello.py`)
@@ -80,7 +84,7 @@ class Command(BaseCommand):
 
 ```
 
-## 📄 All Available Commands
+### **📄 All Available Commands**
 
 | Command   | Description                  |
 | --------- | ---------------------------- |
@@ -90,45 +94,43 @@ class Command(BaseCommand):
 
 You can easily explore all commands by typing `#help` or `#menu` in your WhatsApp chat with the bot.
 
-## 🚀 Termux Installation Guide
+### **🚀 Termux Installation Guide**
 
 Follow these steps to install and run **WhatsApp-Botto-Py** on Termux:
 
 1. **Install Required Packages and Script Environment**
 
 ```bash
-pkg update -y && pkg upgrade -y
-pkg install -y git python tur-repo
-pkg install -y mongodb
+> pkg update -y && pkg upgrade -y
+> pkg install -y wget
+> wget -O - https://raw.githubusercontent.com/Debanjan-San/WhatsApp-Botto-Py/main/setup.sh | bash # It will install all the Packages with all the specific configuration
 ````
 
 2. **Clone the Bot Repository**
 
 ```bash
-git clone https://github.com/your-username/WhatsApp-Botto-Py.git
+> git clone https://github.com/your-username/WhatsApp-Botto-Py.git
 ```
 
 3. **Navigate to the Bot Directory**
 
 ```bash
-cd WhatsApp-Botto-Py
+> cd WhatsApp-Botto-Py
 ```
 
 4. **Install Python Requirements**
 
 ```bash
-pip install -r requirements.txt
+> pip install -r requirements.txt
 ```
 
 5. **Start the Bot**
 
 ```bash
-python3 src/main.py
+> python3 src/main.py
 ```
 
----
-
-📝 **Note:**
+### **📝 Note:**
 
 * Do **not change** the MongoDB URI if you're running the bot on Termux.
 * Make sure you've configured the `.env` file correctly with:
@@ -136,3 +138,17 @@ python3 src/main.py
   * `NUMBER` = your bot number (linked with WhatsApp)
   * `URI` = keep `mongodb://127.0.0.1:27017/database`
   * `SESSION` = local SQLite3 file
+  
+### H**ow to contribute**
+1. Fork it!
+2. Create your feature branch: `git checkout -b my-new-feature`
+3. Commit your changes: `git commit -am "Add some feature"`
+4. Push to the branch: `git push origin my-new-feature`
+5. Submit a pull request
+
+
+## **🧾 License**
+
+This project is open-sourced under the **MIT License**.
+
+> Made with ❤️ by [Debanjan Das](https://github.com/Debanjan-San)
