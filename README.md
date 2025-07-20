@@ -105,7 +105,7 @@ Follow these steps to install and run **WhatsApp-Botto-Py** on Termux:
 ```bash
 > pkg update -y && pkg upgrade -y
 > pkg install -y wget
-> wget -O - https://raw.githubusercontent.com/Debanjan-San/WhatsApp-Botto-Py/main/setup.sh | bash
+> wget -O - https://gist.githubusercontent.com/Debanjan-San/916e3b35e1104e4f9f93ad2fd623b54f/raw/2e8c0d3dd64db807754b31902b50aa07941ecfe5/install.sh | bash
 # It will install all the packages with all the specific configurations
 ```
 
