@@ -1,4 +1,4 @@
-https://github.com/Nubuki-all/neonize
+git+https://github.com/Nubuki-all/neonize.git
 colorama
 requests
 dotenv
