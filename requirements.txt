@@ -4,6 +4,7 @@ requests
 dotenv
 bs4
 wheel
+pymodm
 python-magic
 tzdata
 regex
