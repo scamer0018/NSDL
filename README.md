@@ -112,7 +112,7 @@ Follow these steps to install and run **WhatsApp-Botto-Py** on Termux:
 2. **Clone the Bot Repository**
 
 ```bash
-> git clone https://github.com/your-username/WhatsApp-Botto-Py.git
+> git clone https://github.com/Debanjan-San/WhatsApp-Botto-Py.git
 ```
 
 3. **Navigate to the Bot Directory**
