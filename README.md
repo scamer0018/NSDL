@@ -1,6 +1,6 @@
 # 🤖 WhatsApp-Botto-Py
 
-**WhatsApp-Botto-Py** is a WhatsApp bot created with [neonize](https://github.com/krypton-byte/neonize) and written in Python. This is my first Python open-source project. If there are any mistakes, feel free to open an issue.
+**WhatsApp-Botto-Py** is a WhatsApp bot created with [neonize](https://github.com/krypton-byte/neonize) and written in Python. This is my first Python open source project. If there are any mistakes, feel free to open an issue.
 
 **⚠️ NOTE:** I can't guarantee that you won’t be blocked for using this code. Although it has worked for me, WhatsApp does not allow bots or unofficial clients on their platform. So, this shouldn't be considered completely safe.
 
@@ -10,7 +10,7 @@
 - **Primary Library**: [neonize](https://github.com/krypton-byte/neonize) (WhatsApp Web API for Python)
 - **Database**: MongoDB
 - **For Termux**: Uses `tur-repo` MongoDB variant
-- **Terminal Command Setup**: Copy-paste and run link system (Termux support)
+- **Terminal Command Setup**: Copy paste and run link system (Termux support)
 
 ## ✨ **Features**
 - Easy plug-and-play installation via Termux
