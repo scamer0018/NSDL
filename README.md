@@ -127,7 +127,13 @@ Follow these steps to install and run **WhatsApp-Botto-Py** on Termux:
 > pip install -r requirements.txt
 ```
 
-5. **Start the Bot**
+5. **Start MongoDB in background**
+
+```bash
+> mongod --dbpath=$PREFIX/var/lib/mongodb --fork --logpath=$PREFIX/var/log/mongod.log
+```
+
+6. **Start the Bot**
 
 ```bash
 > python3 src/main.py
