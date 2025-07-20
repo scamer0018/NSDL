@@ -14,8 +14,7 @@
 
 ## ✨ **Features**
 - Easy plug-and-play installation via Termux
-- MongoDB
-- In-built session file generator to avoid QR hassle
+- Uses code based session instead of QR
 - Modular command handler
 - Fully compatible with Termux, VPS, and local machines
 
