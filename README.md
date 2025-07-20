@@ -10,7 +10,6 @@
 - **Primary Library**: [neonize](https://github.com/krypton-byte/neonize) (WhatsApp Web API for Python)
 - **Database**: MongoDB
 - **For Termux**: Uses `tur-repo` MongoDB variant
-- **Terminal Command Setup**: Copy paste and run link system (Termux support)
 
 ## ✨ **Features**
 - Easy plug-and-play installation via Termux
