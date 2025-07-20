@@ -10,12 +10,11 @@
 - **Primary Library**: [neonize](https://github.com/krypton-byte/neonize) (WhatsApp Web API for Python)
 - **Database**: MongoDB
 - **For Termux**: Uses `tur-repo` MongoDB variant
-- **Session File**: No QR scanning, uses direct session generation (`db.sqlite3`)
 - **Terminal Command Setup**: Copy-paste and run link system (Termux support)
 
 ## ✨ **Features**
 - Easy plug-and-play installation via Termux
-- MongoDB + local SQLite combo
+- MongoDB
 - In-built session file generator to avoid QR hassle
 - Modular command handler
 - Fully compatible with Termux, VPS, and local machines
