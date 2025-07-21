@@ -7,4 +7,5 @@ wheel
 pymodm
 python-magic
 tzdata
+yt-dlp[default] --pre
 regex
