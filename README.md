@@ -127,7 +127,8 @@ Follow these steps to install and run **WhatsApp-Botto-Py** on Termux:
 > pip install -r requirements.txt
 ```
 
-5. **Start MongoDB in background**
+5. **Start MongoDB in background** <br>
+   `If you are using the install.sh installation script, then you don’t need to run it.`
 
 ```bash
 > mongod --dbpath=$PREFIX/var/lib/mongodb --fork --logpath=$PREFIX/var/log/mongod.log
